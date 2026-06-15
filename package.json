@@ -1,0 +1,17 @@
+{
+  "name": "the-prince",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "groq": "^3.0.0",
+    "next": "latest",
+    "octokit": "^3.0.0",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
