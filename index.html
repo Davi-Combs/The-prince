@@ -1,0 +1,944 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Glitch Mask Morph</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                font-family:
+                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                    Oxygen, Ubuntu, Cantarell, sans-serif;
+                background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+                color: #ffffff;
+                min-height: 100vh;
+                line-height: 1.6;
+            }
+
+            .container {
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 2rem;
+            }
+
+            header {
+                text-align: center;
+                margin-bottom: 3rem;
+            }
+
+            header h1 {
+                font-size: 3rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+                background: linear-gradient(45deg, #00ff88, #00ccff);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+
+            header p {
+                font-size: 1.125rem;
+                color: #999;
+            }
+
+            .content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 60vh;
+            }
+
+            .upload-section {
+                width: 100%;
+                max-width: 600px;
+            }
+
+            .upload-area {
+                border: 3px dashed #333;
+                border-radius: 12px;
+                padding: 4rem 2rem;
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.02);
+            }
+
+            .upload-area:hover {
+                border-color: #00ff88;
+                background: rgba(0, 255, 136, 0.05);
+                transform: translateY(-2px);
+            }
+
+            .upload-area.drag-over {
+                border-color: #00ccff;
+                background: rgba(0, 204, 255, 0.1);
+            }
+
+            .upload-area svg {
+                color: #00ff88;
+                margin-bottom: 1.5rem;
+            }
+
+            .upload-area h2 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .upload-area p {
+                color: #999;
+            }
+
+            .canvas-section {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+                width: 100%;
+                align-items: center;
+            }
+
+            #glitchCanvas {
+                max-width: 100%;
+                max-height: 70vh;
+                border-radius: 12px;
+                box-shadow: 0 20px 60px rgba(0, 255, 136, 0.2);
+            }
+
+            .controls {
+                background: rgba(255, 255, 255, 0.05);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 2rem;
+                width: 100%;
+                max-width: 800px;
+                backdrop-filter: blur(10px);
+            }
+
+            .control-group {
+                margin-bottom: 1.5rem;
+            }
+
+            .control-group:last-child {
+                margin-bottom: 0;
+            }
+
+            .control-group label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: 600;
+                color: #00ff88;
+                font-size: 0.875rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .control-group input[type="range"] {
+                width: 100%;
+                height: 6px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 3px;
+                outline: none;
+                -webkit-appearance: none;
+            }
+
+            .control-group input[type="range"]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 18px;
+                height: 18px;
+                background: #00ff88;
+                cursor: pointer;
+                border-radius: 50%;
+                transition: all 0.2s ease;
+            }
+
+            .control-group input[type="range"]::-webkit-slider-thumb:hover {
+                background: #00ccff;
+                transform: scale(1.2);
+            }
+
+            .control-group input[type="range"]::-moz-range-thumb {
+                width: 18px;
+                height: 18px;
+                background: #00ff88;
+                cursor: pointer;
+                border-radius: 50%;
+                border: none;
+                transition: all 0.2s ease;
+            }
+
+            .control-group input[type="range"]::-moz-range-thumb:hover {
+                background: #00ccff;
+                transform: scale(1.2);
+            }
+
+            .button-group {
+                display: flex;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                border: none;
+                border-radius: 8px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 0.875rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+            }
+
+            .btn-primary {
+                background: linear-gradient(45deg, #00ff88, #00ccff);
+                color: #000;
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(0, 255, 136, 0.3);
+            }
+
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.1);
+                color: #fff;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+            }
+
+            .btn-secondary:hover {
+                background: rgba(255, 255, 255, 0.15);
+                transform: translateY(-2px);
+            }
+
+            .value-display {
+                display: inline-block;
+                margin-left: 0.5rem;
+                color: #00ccff;
+                font-weight: 700;
+            }
+
+            @media (max-width: 768px) {
+                header h1 {
+                    font-size: 2rem;
+                }
+
+                .controls {
+                    padding: 1.5rem;
+                }
+
+                .button-group {
+                    flex-direction: column;
+                }
+
+                .btn {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <header>
+                <h1>Glitch Mask Morph</h1>
+                <p>Transform your face into a glitchy digital mask</p>
+            </header>
+
+            <div class="content">
+                <div class="upload-section" id="uploadSection">
+                    <div class="upload-area" id="uploadArea">
+                        <svg
+                            width="64"
+                            height="64"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                        >
+                            <path
+                                d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                            ></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                        <h2>Upload Face Image</h2>
+                        <p>Click or drag an image here</p>
+                        <input
+                            type="file"
+                            id="fileInput"
+                            accept="image/*"
+                            hidden
+                        />
+                    </div>
+                </div>
+
+                <div
+                    class="canvas-section"
+                    id="canvasSection"
+                    style="display: none"
+                >
+                    <canvas id="glitchCanvas"></canvas>
+                    <div class="controls" id="controls"></div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            class GlitchCanvas {
+                constructor(canvas, image) {
+                    this.canvas = canvas;
+                    this.ctx = canvas.getContext("2d", {
+                        willReadFrequently: true
+                    });
+                    this.image = image;
+                    this.animationId = null;
+
+                    this.settings = {
+                        glitchIntensity: 50,
+                        scanlineSpeed: 30,
+                        rgbSplit: 40,
+                        blockSize: 20,
+                        pixelation: 0,
+                        colorShift: 30,
+                        noiseIntensity: 20,
+                        morphSpeed: 50,
+                        distortion: 30
+                    };
+
+                    this.time = 0;
+                    this.setupCanvas();
+                }
+
+                setupCanvas() {
+                    const maxWidth = 800;
+                    const maxHeight = 800;
+
+                    let width = this.image.width;
+                    let height = this.image.height;
+
+                    if (width > maxWidth || height > maxHeight) {
+                        const ratio = Math.min(
+                            maxWidth / width,
+                            maxHeight / height
+                        );
+                        width *= ratio;
+                        height *= ratio;
+                    }
+
+                    this.canvas.width = width;
+                    this.canvas.height = height;
+
+                    this.baseImageData = this.ctx.createImageData(
+                        width,
+                        height
+                    );
+                    this.ctx.drawImage(this.image, 0, 0, width, height);
+                    const sourceData = this.ctx.getImageData(
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+                    this.baseImageData.data.set(sourceData.data);
+                }
+
+                start() {
+                    this.animate();
+                }
+
+                stop() {
+                    if (this.animationId) {
+                        cancelAnimationFrame(this.animationId);
+                        this.animationId = null;
+                    }
+                }
+
+                destroy() {
+                    this.stop();
+                }
+
+                updateSetting(key, value) {
+                    this.settings[key] = value;
+                }
+
+                animate() {
+                    this.time += this.settings.morphSpeed / 1000;
+                    this.render();
+                    this.animationId = requestAnimationFrame(() =>
+                        this.animate()
+                    );
+                }
+
+                render() {
+                    const { width, height } = this.canvas;
+
+                    this.ctx.putImageData(this.baseImageData, 0, 0);
+
+                    if (this.settings.pixelation > 0) {
+                        this.applyPixelation();
+                    }
+
+                    if (this.settings.distortion > 0) {
+                        this.applyDistortion();
+                    }
+
+                    if (this.settings.glitchIntensity > 0) {
+                        this.applyGlitchBlocks();
+                    }
+
+                    if (this.settings.rgbSplit > 0) {
+                        this.applyRGBSplit();
+                    }
+
+                    if (this.settings.colorShift > 0) {
+                        this.applyColorShift();
+                    }
+
+                    if (this.settings.scanlineSpeed > 0) {
+                        this.applyScanlines();
+                    }
+
+                    if (this.settings.noiseIntensity > 0) {
+                        this.applyNoise();
+                    }
+                }
+
+                applyPixelation() {
+                    const pixelSize = Math.max(
+                        1,
+                        Math.floor(this.settings.pixelation / 5)
+                    );
+                    const { width, height } = this.canvas;
+
+                    const tempCanvas = document.createElement("canvas");
+                    const tempCtx = tempCanvas.getContext("2d");
+                    tempCanvas.width = width;
+                    tempCanvas.height = height;
+
+                    tempCtx.drawImage(this.canvas, 0, 0);
+
+                    this.ctx.imageSmoothingEnabled = false;
+                    this.ctx.drawImage(
+                        tempCanvas,
+                        0,
+                        0,
+                        width,
+                        height,
+                        0,
+                        0,
+                        width / pixelSize,
+                        height / pixelSize
+                    );
+                    this.ctx.drawImage(
+                        this.canvas,
+                        0,
+                        0,
+                        width / pixelSize,
+                        height / pixelSize,
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+                    this.ctx.imageSmoothingEnabled = true;
+                }
+
+                applyDistortion() {
+                    const { width, height } = this.canvas;
+                    const imageData = this.ctx.getImageData(
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+                    const distortedData = this.ctx.createImageData(
+                        width,
+                        height
+                    );
+
+                    const intensity = this.settings.distortion / 100;
+
+                    for (let y = 0; y < height; y++) {
+                        for (let x = 0; x < width; x++) {
+                            const wave =
+                                Math.sin(x * 0.02 + this.time * 2) *
+                                Math.sin(y * 0.03 + this.time) *
+                                10 *
+                                intensity;
+                            const sourceX = Math.max(
+                                0,
+                                Math.min(width - 1, Math.floor(x + wave))
+                            );
+                            const sourceY = Math.max(
+                                0,
+                                Math.min(height - 1, y)
+                            );
+
+                            const sourceIdx = (sourceY * width + sourceX) * 4;
+                            const targetIdx = (y * width + x) * 4;
+
+                            distortedData.data[targetIdx] =
+                                imageData.data[sourceIdx];
+                            distortedData.data[targetIdx + 1] =
+                                imageData.data[sourceIdx + 1];
+                            distortedData.data[targetIdx + 2] =
+                                imageData.data[sourceIdx + 2];
+                            distortedData.data[targetIdx + 3] =
+                                imageData.data[sourceIdx + 3];
+                        }
+                    }
+
+                    this.ctx.putImageData(distortedData, 0, 0);
+                }
+
+                applyGlitchBlocks() {
+                    const { width, height } = this.canvas;
+                    const blockCount = Math.floor(
+                        this.settings.glitchIntensity / 10
+                    );
+
+                    for (let i = 0; i < blockCount; i++) {
+                        const blockWidth =
+                            Math.random() * this.settings.blockSize * 5;
+                        const blockHeight =
+                            Math.random() * this.settings.blockSize;
+                        const x = Math.random() * width;
+                        const y = Math.random() * height;
+
+                        if (Math.random() > 0.5) {
+                            const offsetX =
+                                (Math.random() - 0.5) *
+                                this.settings.blockSize *
+                                2;
+                            try {
+                                const imageData = this.ctx.getImageData(
+                                    x,
+                                    y,
+                                    blockWidth,
+                                    blockHeight
+                                );
+                                this.ctx.putImageData(
+                                    imageData,
+                                    x + offsetX,
+                                    y
+                                );
+                            } catch (e) {}
+                        } else {
+                            this.ctx.fillStyle = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 0.3})`;
+                            this.ctx.fillRect(x, y, blockWidth, blockHeight);
+                        }
+                    }
+                }
+
+                applyRGBSplit() {
+                    const { width, height } = this.canvas;
+                    const imageData = this.ctx.getImageData(
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+                    const splitData = this.ctx.createImageData(width, height);
+
+                    const offset = Math.floor(this.settings.rgbSplit / 5);
+                    const waveOffset = Math.sin(this.time) * offset;
+
+                    for (let y = 0; y < height; y++) {
+                        for (let x = 0; x < width; x++) {
+                            const idx = (y * width + x) * 4;
+
+                            const rIdx =
+                                (y * width +
+                                    Math.max(
+                                        0,
+                                        Math.min(
+                                            width - 1,
+                                            x + Math.floor(waveOffset)
+                                        )
+                                    )) *
+                                4;
+                            const gIdx = idx;
+                            const bIdx =
+                                (y * width +
+                                    Math.max(
+                                        0,
+                                        Math.min(
+                                            width - 1,
+                                            x - Math.floor(waveOffset)
+                                        )
+                                    )) *
+                                4;
+
+                            splitData.data[idx] = imageData.data[rIdx];
+                            splitData.data[idx + 1] = imageData.data[gIdx + 1];
+                            splitData.data[idx + 2] = imageData.data[bIdx + 2];
+                            splitData.data[idx + 3] = imageData.data[idx + 3];
+                        }
+                    }
+
+                    this.ctx.putImageData(splitData, 0, 0);
+                }
+
+                applyColorShift() {
+                    const { width, height } = this.canvas;
+                    const imageData = this.ctx.getImageData(
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+                    const data = imageData.data;
+
+                    const shift = this.settings.colorShift;
+                    const hueShift = Math.sin(this.time * 0.5) * shift;
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        const r = data[i];
+                        const g = data[i + 1];
+                        const b = data[i + 2];
+
+                        data[i] = Math.min(255, r + hueShift);
+                        data[i + 1] = Math.min(
+                            255,
+                            g + Math.sin(this.time * 0.7) * shift
+                        );
+                        data[i + 2] = Math.min(
+                            255,
+                            b + Math.cos(this.time * 0.3) * shift
+                        );
+                    }
+
+                    this.ctx.putImageData(imageData, 0, 0);
+                }
+
+                applyScanlines() {
+                    const { width, height } = this.canvas;
+                    const speed = this.settings.scanlineSpeed / 10;
+                    const scanlineY = (this.time * speed * 20) % height;
+
+                    this.ctx.fillStyle = "rgba(0, 255, 136, 0.1)";
+                    this.ctx.fillRect(0, scanlineY, width, 3);
+
+                    for (let y = 0; y < height; y += 4) {
+                        this.ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+                        this.ctx.fillRect(0, y, width, 1);
+                    }
+                }
+
+                applyNoise() {
+                    const { width, height } = this.canvas;
+                    const imageData = this.ctx.getImageData(
+                        0,
+                        0,
+                        width,
+                        height
+                    );
+                    const data = imageData.data;
+
+                    const noiseAmount = this.settings.noiseIntensity * 2;
+
+                    for (let i = 0; i < data.length; i += 4) {
+                        if (Math.random() > 0.95) {
+                            const noise = (Math.random() - 0.5) * noiseAmount;
+                            data[i] += noise;
+                            data[i + 1] += noise;
+                            data[i + 2] += noise;
+                        }
+                    }
+
+                    this.ctx.putImageData(imageData, 0, 0);
+                }
+            }
+
+            function createUI(container, glitchCanvas) {
+                const controls = [
+                    {
+                        label: "Glitch Intensity",
+                        key: "glitchIntensity",
+                        min: 0,
+                        max: 100
+                    },
+                    { label: "RGB Split", key: "rgbSplit", min: 0, max: 100 },
+                    {
+                        label: "Distortion",
+                        key: "distortion",
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        label: "Color Shift",
+                        key: "colorShift",
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        label: "Scanline Speed",
+                        key: "scanlineSpeed",
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        label: "Noise Intensity",
+                        key: "noiseIntensity",
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        label: "Pixelation",
+                        key: "pixelation",
+                        min: 0,
+                        max: 100
+                    },
+                    {
+                        label: "Morph Speed",
+                        key: "morphSpeed",
+                        min: 0,
+                        max: 100
+                    },
+                    { label: "Block Size", key: "blockSize", min: 5, max: 50 }
+                ];
+
+                const presets = [
+                    {
+                        name: "Subtle Glitch",
+                        settings: {
+                            glitchIntensity: 20,
+                            scanlineSpeed: 40,
+                            rgbSplit: 15,
+                            blockSize: 10,
+                            pixelation: 0,
+                            colorShift: 10,
+                            noiseIntensity: 10,
+                            morphSpeed: 30,
+                            distortion: 10
+                        }
+                    },
+                    {
+                        name: "Heavy Corruption",
+                        settings: {
+                            glitchIntensity: 80,
+                            scanlineSpeed: 70,
+                            rgbSplit: 60,
+                            blockSize: 35,
+                            pixelation: 40,
+                            colorShift: 70,
+                            noiseIntensity: 60,
+                            morphSpeed: 80,
+                            distortion: 70
+                        }
+                    },
+                    {
+                        name: "RGB Madness",
+                        settings: {
+                            glitchIntensity: 40,
+                            scanlineSpeed: 50,
+                            rgbSplit: 90,
+                            blockSize: 20,
+                            pixelation: 0,
+                            colorShift: 80,
+                            noiseIntensity: 20,
+                            morphSpeed: 60,
+                            distortion: 50
+                        }
+                    },
+                    {
+                        name: "Digital Decay",
+                        settings: {
+                            glitchIntensity: 60,
+                            scanlineSpeed: 30,
+                            rgbSplit: 30,
+                            blockSize: 40,
+                            pixelation: 60,
+                            colorShift: 40,
+                            noiseIntensity: 80,
+                            morphSpeed: 40,
+                            distortion: 30
+                        }
+                    }
+                ];
+
+                const controlsHTML = controls
+                    .map(
+                        control => `
+        <div class="control-group">
+          <label for="${control.key}">
+            ${control.label}
+            <span class="value-display" id="${control.key}Value">${glitchCanvas.settings[control.key]}</span>
+          </label>
+          <input
+            type="range"
+            id="${control.key}"
+            min="${control.min}"
+            max="${control.max}"
+            value="${glitchCanvas.settings[control.key]}"
+          >
+        </div>
+      `
+                    )
+                    .join("");
+
+                const presetsHTML = `
+        <div class="control-group">
+          <label>Presets</label>
+          <div class="button-group">
+            ${presets
+                .map(
+                    (preset, idx) => `
+              <button class="btn btn-secondary preset-btn" data-preset="${idx}">
+                ${preset.name}
+              </button>
+            `
+                )
+                .join("")}
+          </div>
+        </div>
+      `;
+
+                const resetHTML = `
+        <div class="control-group">
+          <div class="button-group">
+            <button class="btn btn-primary" id="resetBtn">Reset to Default</button>
+            <button class="btn btn-secondary" id="newImageBtn">Upload New Image</button>
+          </div>
+        </div>
+      `;
+
+                container.innerHTML = controlsHTML + presetsHTML + resetHTML;
+
+                controls.forEach(control => {
+                    const input = document.getElementById(control.key);
+                    const valueDisplay = document.getElementById(
+                        `${control.key}Value`
+                    );
+
+                    input.addEventListener("input", e => {
+                        const value = parseInt(e.target.value);
+                        glitchCanvas.updateSetting(control.key, value);
+                        valueDisplay.textContent = value;
+                    });
+                });
+
+                document.querySelectorAll(".preset-btn").forEach(btn => {
+                    btn.addEventListener("click", () => {
+                        const presetIndex = parseInt(btn.dataset.preset);
+                        const preset = presets[presetIndex];
+
+                        Object.entries(preset.settings).forEach(
+                            ([key, value]) => {
+                                glitchCanvas.updateSetting(key, value);
+                                const input = document.getElementById(key);
+                                const valueDisplay = document.getElementById(
+                                    `${key}Value`
+                                );
+                                if (input) {
+                                    input.value = value;
+                                    valueDisplay.textContent = value;
+                                }
+                            }
+                        );
+                    });
+                });
+
+                document
+                    .getElementById("resetBtn")
+                    .addEventListener("click", () => {
+                        const defaultSettings = {
+                            glitchIntensity: 50,
+                            scanlineSpeed: 30,
+                            rgbSplit: 40,
+                            blockSize: 20,
+                            pixelation: 0,
+                            colorShift: 30,
+                            noiseIntensity: 20,
+                            morphSpeed: 50,
+                            distortion: 30
+                        };
+
+                        Object.entries(defaultSettings).forEach(
+                            ([key, value]) => {
+                                glitchCanvas.updateSetting(key, value);
+                                const input = document.getElementById(key);
+                                const valueDisplay = document.getElementById(
+                                    `${key}Value`
+                                );
+                                if (input) {
+                                    input.value = value;
+                                    valueDisplay.textContent = value;
+                                }
+                            }
+                        );
+                    });
+
+                document
+                    .getElementById("newImageBtn")
+                    .addEventListener("click", () => {
+                        location.reload();
+                    });
+            }
+
+            const uploadArea = document.getElementById("uploadArea");
+            const fileInput = document.getElementById("fileInput");
+            const uploadSection = document.getElementById("uploadSection");
+            const canvasSection = document.getElementById("canvasSection");
+            const canvas = document.getElementById("glitchCanvas");
+
+            let glitchCanvas = null;
+
+            uploadArea.addEventListener("click", () => fileInput.click());
+
+            uploadArea.addEventListener("dragover", e => {
+                e.preventDefault();
+                uploadArea.classList.add("drag-over");
+            });
+
+            uploadArea.addEventListener("dragleave", () => {
+                uploadArea.classList.remove("drag-over");
+            });
+
+            uploadArea.addEventListener("drop", e => {
+                e.preventDefault();
+                uploadArea.classList.remove("drag-over");
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith("image/")) {
+                    loadImage(file);
+                }
+            });
+
+            fileInput.addEventListener("change", e => {
+                const file = e.target.files[0];
+                if (file) {
+                    loadImage(file);
+                }
+            });
+
+            function loadImage(file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = new Image();
+                    img.onload = () => {
+                        uploadSection.style.display = "none";
+                        canvasSection.style.display = "flex";
+
+                        if (glitchCanvas) {
+                            glitchCanvas.destroy();
+                        }
+
+                        glitchCanvas = new GlitchCanvas(canvas, img);
+                        createUI(
+                            document.getElementById("controls"),
+                            glitchCanvas
+                        );
+                        glitchCanvas.start();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        </script>
+    </body>
+</html>
