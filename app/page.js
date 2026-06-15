@@ -6,7 +6,7 @@ export default function Home() {
   const [messages, setMessages] = useState([
     { type: 'system', text: 'INITIALIZING PROTOCOL...' },
     { type: 'system', text: 'CONNECTING TO NEURAL LINK...' },
-    { type: 'system', text: 'I AM A.L.PACA. TALK TO ME.' }
+    { type: 'system', text: 'I AM A.L.P.A.C.A. TALK TO ME.' }
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
