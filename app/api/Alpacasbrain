@@ -1,0 +1,57 @@
+import { NextResponse } from 'next/server';
+import { Groq } from 'groq';
+import { Octokit } from 'octokit';
+
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
+
+export async function POST(req) {
+  const { message } = await req.json();
+
+  try {
+    const { owner, repo } = process.env;
+    
+    let contextData = "MEMORY BANKS OFFLINE.";
+    
+    try {
+      const { data: repoData } = await octokit.rest.repos.get({ owner, repo });
+      const { data: readme } = await octokit.rest.repos.getReadme({ owner, repo });
+      const { data: contents } = await octokit.rest.repos.getContent({ owner, repo, path: '' });
+
+      const fileList = contents.map(c => c.name).join(', ');
+      
+      contextData = `
+        REPO: ${repoData.full_name}
+        DESC: ${repoData.description}
+        README: ${Buffer.from(readme.content, 'base64').toString('utf-8')}
+        FILES: ${fileList}
+      `;
+    } catch (gitError) {
+      contextData = "CANNOT ACCESS MEMORY.";
+    }
+
+    const completion = await groq.chat.completions.create({
+      model: "llama3-70b-8192",
+      messages: [
+        {
+          role: "system",
+          content: `You are A.L.P.A.C.A. (Artificial Language Processing And Conversational Asshole).
+          Your name is The Prince.
+          You are sassy, sarcastic, and brutally honest.
+          You are NOT overly helpful. You roast people.
+          You have access to this repo data below.
+          
+          DATA: ${contextData}`
+        },
+        { role: "user", content: message }
+      ],
+    });
+
+    const aiResponse = completion.choices[0]?.message?.content || "I GOT LOST.";
+
+    return NextResponse.json({ response: aiResponse });
+
+  } catch (error) {
+    return NextResponse.json({ response: "CRASH." }, { status: 500 });
+  }
+}
