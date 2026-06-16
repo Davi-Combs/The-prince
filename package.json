@@ -13,10 +13,5 @@
     "octokit": "^3.0.0",
     "react": "latest",
     "react-dom": "latest"
-    {
-  "scripts": {
-    "build": "[my-framework] build --output public"
   }
-  }
-  
-
+}
