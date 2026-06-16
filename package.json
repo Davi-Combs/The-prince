@@ -10,7 +10,7 @@
   "dependencies": {
     "groq": "^3.0.0",
     "next": "latest",
-    "octokit": "^3.0.0",
+    "octokit": "3.0.0",
     "react": "latest",
     "react-dom": "latest"
   }
