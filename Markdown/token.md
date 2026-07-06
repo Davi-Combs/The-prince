@@ -20,7 +20,7 @@ Decoder-only transformer (like LLaMA).
 
 <ing src="images/toke02.png">
 
-<h1 align="center">2. Data<=h1>
+<h1 align="center">2. Data<h1>
 
 •Use your text: chats, manuals, public-domain.
 
