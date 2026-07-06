@@ -112,29 +112,50 @@ script:
 Python.                  Copy code
 ```
 
-from transformers import (LlamaConfig, Llama For CausalLM, AutoTokenizer,
+from transformers import
+(LlamaConfig, Llama For CausalLM,
+AutoTokenizer,
 
-Trainer, TrainingArguments, DataCollator For Language Modeling) import datasets, os
+Trainer, TrainingArguments,
+DataCollator For Language Modeling)
+import datasets, os
 
-tok = AutoTokenizer.from_pretrained("d ata/spm", config={"model_max_length":4096} use_fast=False)
-
+tok =
+AutoTokenizer.from_pretrained("d
+ata/spm",
+config={"model_max_length":4096}
+use_fast=False)
 tok.pad_token = tok.eos_token
 
-conf = LlamaConfig.from_json_file("conf igs/alpacore-1.3b.json") model Llama For CausalLM(conf)
+conf =
+LlamaConfig.from_json_file("conf
+igs/alpacore-1.3b.json")
+model Llama For CausalLM(conf)
 
-texts [] for p in os.listdir("data/raw"): if p.endswith(".txt"):
+texts []
+for p in os.listdir("data/raw"):
+    if p.endswith(".txt"):
 
-texts.append(open(f"data/raw/{p}", "r", encoding="utf-8", errors="ignore").read())
+texts.append(open(f"data/raw/
+{p}", "r", encoding="utf-8",
+errors="ignore").read())
 
-ds = datasets.Dataset.from_dict({"tex t": texts})
+ds =
+datasets.Dataset.from_dict({"tex
+t": texts})
 
 # chunk into blocks of 2048
-
-def chunk(ex): ids = tok(ex["text"]) ["input_ids"] return {"input_ids": [ids [i:i+2048] for i in range(0, len(ids)-2048, 2048)]}
+def chunk(ex):
+    ids = tok(ex["text"])
+["input_ids"]
+     return {"input_ids":
+[ids [i:i+2048] for i in range(0,
+len(ids)-2048, 2048)]}
 
 tokd ds.map(chunk,
 batched-False,
-remove_columns=["text"]).train_t est_split(0.01, seed=42)
+remove_columns=["text"]).train_t
+est_split(0.01, seed=42)
 
 collator =
 DataCollator For LanguageModeling(
