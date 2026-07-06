@@ -3,7 +3,13 @@ Goal: ☆☆☆☆☆
 Build your own weights, LLaMA-compatible, small enough for Termux/Android, trained on your data, quantized to GGUF, and runnable in llama.cpp.
 
 -------
-<img width="33" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke01.png">
+<img width="75%" height ="75%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke01.png">
+
+
+  <img width = "33%" src="hhttps://raw.githubusercontent.com/A-l-p-a-c-a/.github/refs/heads/main/profile/src/IMG_20250826_013415_733.jpg)
+">
+
+
 <h1 align="center">1. Architecture</h1>
 
 Decoder-only transformer (like LLaMA).
