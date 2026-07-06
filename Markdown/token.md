@@ -202,7 +202,7 @@ Json.              Copy code
 
  •Run DPOTrainer to enforce personality.
 
-<img src="images/toke08.png">
+<img src="images/toke08.jpg">
 <h1 align="center">8. Export to GGUF (for Termux/Android)</h1>
 
 Bash.           Copy code
