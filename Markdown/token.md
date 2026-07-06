@@ -86,8 +86,8 @@ Copy code
 
 
 ```
-<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke03.jpg">
 
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke04.jpg">
 <h2 align="center">5. Train From Scratch</h2>
 
 Dependencies:
@@ -104,8 +104,7 @@ sentencepiece evaluate
 ```
 
 
-<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke04.jpg">
-
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke05.jpg">
 <h2 align="center">Minimal training </h2>
 
 script:
