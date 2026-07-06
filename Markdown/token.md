@@ -164,7 +164,7 @@ tok.save_pretrained("out/alpacore-1.3b")
 
 ```
 ------
-<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke06.jpg">
+<!--<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke06.jpg">-->
 
 <h1 align="center">6. Sculpt Persona (SFT)</h1>
 
@@ -181,7 +181,7 @@ Json.           Copy code
 ```
 Then fine-tune with TRL SFTTrainer.
 
-<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke08.jpg">
+<!--<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke08.jpg">-->
 
 <h3 align="center">7. DPO (Optional, “Taunt but Helpful")</h3>
 
@@ -194,7 +194,7 @@ Json.              Copy code
 ```
 
  •Run DPOTrainer to enforce personality.
-<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke08.jpg">
+<!--<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke08.jpg">-->
 
 <h1 align="center">8.to GGUF (for Termux/Android)</h1>
 
@@ -214,7 +214,7 @@ Q4_K_M
 
 ```
 -----
-<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke09.jpg">
+<!--<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke09.jpg">-->
 
 <h1 align="center">9. Run on Android</h1>
 
