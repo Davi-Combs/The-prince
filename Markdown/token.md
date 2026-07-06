@@ -3,11 +3,7 @@ Goal: ☆☆☆☆☆
 Build your own weights, LLaMA-compatible, small enough for Termux/Android, trained on your data, quantized to GGUF, and runnable in llama.cpp.
 
 -------
-<img width="75%" height ="75%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke01.png">
-
-
-  <img width = "33%" src="hhttps://raw.githubusercontent.com/A-l-p-a-c-a/.github/refs/heads/main/profile/src/IMG_20250826_013415_733.jpg)
-">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke01.png">
 
 
 <h1 align="center">1. Architecture</h1>
@@ -21,7 +17,7 @@ Decoder-only transformer (like LLaMA).
 •Start small: 1.3B (runs on phones when quantized). Later: 3B, 8B.
 ------
 
-<ing src="images/toke02.png">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke02.png">
 
 <h1 align="center">2. Data<h1>
 
@@ -39,8 +35,7 @@ Decoder-only transformer (like LLaMA).
 
 
 ----
-
-<ing src="images/toke02.jpg">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/token02.jpg">
 
 <h1 align="center">3. Build a Tokenizer</h1>
 
@@ -65,8 +60,7 @@ alpaca_spm \
 --model_type=bpe
 
 ```
-
-<ing src="images/toke03.jpg">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke03.jpg">
 
 <h1 align="center">4. Model Config (save as configs/alpacore-1.3b.json)</h1>
 
@@ -92,7 +86,7 @@ Copy code
 
 
 ```
-<ing src="images/toke04.jpg">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke03.jpg">
 
 <h2 align="center">5. Train From Scratch</h2>
 
@@ -110,8 +104,7 @@ sentencepiece evaluate
 ```
 
 
-
-<ing src="images/toke05.png">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke04.jpg">
 
 <h2 align="center">Minimal training </h2>
 
@@ -172,8 +165,7 @@ tok.save_pretrained("out/alpacore-1.3b")
 
 ```
 ------
-
-<ing src="images/toke06.png">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke06.jpg">
 
 <h1 align="center">6. Sculpt Persona (SFT)</h1>
 
@@ -190,8 +182,7 @@ Json.           Copy code
 ```
 Then fine-tune with TRL SFTTrainer.
 
-
-<ing src="images/toke07.png">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke08.jpg">
 
 <h3 align="center">7. DPO (Optional, “Taunt but Helpful")</h3>
 
@@ -204,9 +195,9 @@ Json.              Copy code
 ```
 
  •Run DPOTrainer to enforce personality.
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke08.jpg">
 
-<img src="images/toke08.jpg">
-<h1 align="center">8. Export to GGUF (for Termux/Android)</h1>
+<h1 align="center">8.to GGUF (for Termux/Android)</h1>
 
 Bash.           Copy code
 
@@ -224,7 +215,8 @@ Q4_K_M
 
 ```
 -----
-<img src="images/toke09.jpg">
+<img width="90%" height ="90%" src="https://raw.githubusercontent.com/Davi-Combs/The-prince/refs/heads/main/images/toke09.jpg">
+
 <h1 align="center">9. Run on Android</h1>
 
  •Copy .Q4_K_M.gguf to phone.
