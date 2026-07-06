@@ -2,6 +2,7 @@ Goal:
 
 Build your own weights, LLaMA-compatible, small enough for Termux/Android, trained on your data, quantized to GGUF, and runnable in llama.cpp.
 
+<ing src="images/toke01.jpg
 1. Architecture
 
 Decoder-only transformer (like LLaMA).
