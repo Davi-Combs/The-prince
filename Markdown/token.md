@@ -2,7 +2,7 @@ Goal:
 
 Build your own weights, LLaMA-compatible, small enough for Termux/Android, trained on your data, quantized to GGUF, and runnable in llama.cpp.
 
-<ing src="images/toke01.jpg
+<ing src="images/toke01.png'>
 1. Architecture
 
 Decoder-only transformer (like LLaMA).
@@ -12,6 +12,9 @@ ROPE, SwiGLU, RMSNorm.
 Same shape → compatible with 1lama.cpp + MLC.
 
 Start small: 1.3B (runs on phones when quantized). Later: 3B, 8B.
+
+
+<ing src="images/toke02.png'>
 
 2. Data
 
@@ -30,7 +33,7 @@ c. DPO pass ("asshole but useful" alignment).
 
 
 
-
+<ing src="images/toke03.png'>
 
 3. Build a Tokenizer
 
